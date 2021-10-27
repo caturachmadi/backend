@@ -1,4 +1,8 @@
-const { Class } = require("../../models");
+const {
+     Class,
+     Sequelize: { Op },
+} = require("../../models");
+const { body } = require("express-validator");
 
 const service = async function (req, res, next) {
      try {
@@ -15,4 +19,25 @@ const service = async function (req, res, next) {
      }
 };
 
-module.exports = { service };
+const validation = [
+     body("name")
+          .notEmpty()
+          .withMessage("Nama kelas wajib diisi")
+          // .custom(async (value, { req }) => {
+          //      const dataClass = await Class.findOne({ where: { name: value } });
+          //      console.log(req.params.id, "-----", dataClass.id);
+          //      if (dataClass && req.params.id != dataClass.id) {
+          //           return Promise.reject(`Nama Kelas ${value} sudah digunakan`);
+          //      }
+          //      return true;
+          // }),
+          .custom(async (value, { req }) => {
+               const dataClass = await Class.findOne({ where: { name: value, id: { [Op.ne]: req.params.id } } });
+               if (dataClass) {
+                    return Promise.reject(`Nama Kelas ${value} sudah digunakan`);
+               }
+               return true;
+          }),
+];
+
+module.exports = { service, validation };

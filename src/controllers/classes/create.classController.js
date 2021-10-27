@@ -22,6 +22,13 @@ const validation = [
                }
                return true;
           }),
+     // body().custom((value) => {
+     //      console.log(value);
+     //      if (value.password !== value.passwordConfirm) {
+     //           return Promise.reject("Password tidak cocok");
+     //      }
+     //      return Promise.reject("STOP");
+     // }),
      body("code").notEmpty().withMessage("Kode kelas wajib di isi"),
 ];
 module.exports = { service, validation };
