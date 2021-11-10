@@ -1,5 +1,6 @@
 const {
      Class,
+     Schedule,
      Sequelize: { Op },
 } = require("../../models");
 
@@ -29,9 +30,15 @@ const service = async function (req, res, next) {
           const requestDB = await Class.findAll({
                // attributes: ["id", "name", "img", "createdAt"],
                attributes: { exclude: ["updatedAt", "deletedAt"] },
+               order: [
+                    ["createdAt", "DESC"],
+                    ["id", "DESC"],
+               ],
                where,
                offset: (page - 1) * limit,
                limit,
+               include: { model: Schedule, attributes: ["id", "session", "name", "start", "end"] },
+               order: [[Schedule, "session", "desc"]],
           });
 
           if (!req.params.id) return res.json(requestDB);

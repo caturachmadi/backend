@@ -7,20 +7,18 @@ module.exports = (sequelize, DataTypes) => {
            * This method is not a part of Sequelize lifecycle.
            * The `models/index` file will call this method automatically.
            */
-          static associate(models) {
+          static associate({ Schedule, Class }) {
+               Schedule.belongsTo(Class);
                // define association here
           }
      }
      Schedule.init(
           {
-               classId: DataTypes.STRING,
                name: DataTypes.STRING,
-               code: {
-                    type: DataTypes.STRING(6),
-                    unique: true,
-               },
-               start: DataTypes.DATEONLY,
-               end: DataTypes.DATEONLY,
+               classId: DataTypes.STRING,
+               session: DataTypes.INTEGER,
+               start: DataTypes.DATE,
+               end: DataTypes.DATE,
           },
           {
                sequelize,
