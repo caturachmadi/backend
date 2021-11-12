@@ -3,7 +3,7 @@ const {
      Schedule,
      Sequelize: { Op },
 } = require("../../models");
-
+// const {Op}= require("sequelize")
 const service = async function (req, res, next) {
      try {
           const where = {};

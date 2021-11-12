@@ -3,6 +3,7 @@ const { body } = require("express-validator");
 
 const service = async function (req, res, next) {
      try {
+          return res.json(req.auth);
           const payload = req.body;
           const requestDB = await Class.create(payload);
           return res.json({ msg: "kelas berhasil ditambahkan ", data: requestDB });
@@ -30,5 +31,6 @@ const validation = [
      //      return Promise.reject("STOP");
      // }),
      body("code").notEmpty().withMessage("Kode kelas wajib di isi"),
+     body("status").notEmpty().withMessage("Status tidak boleh kosong").isIn(["fullstack", "Data Science"]).withMessage("Status tidak sesuai"),
 ];
 module.exports = { service, validation };
